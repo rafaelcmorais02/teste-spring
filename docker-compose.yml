@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  db_wedding:
+    image: postgres
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "rafael"
+      POSTGRES_DB: "wedding"
+    ports:
+      - "15432:5432"
+    volumes:
+      - postgres_wedding:/var/lib/postgresql/data/ 
+    networks:
+      - db-network
+      
+  pgadmin_wedding:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "rafaelcmorais02@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "rafael"
+    ports:
+      - "16543:80"
+    volumes:
+      - pgadmin_wedding:/var/lib/pgadmin
+    depends_on:
+      - db_wedding
+    networks:
+      - db-network
+
+networks: 
+  db-network:
+    driver: bridge
+
+volumes:
+  postgres_wedding:
+  pgadmin_wedding:
