@@ -41,7 +41,7 @@ public class UserController {
     */
     @PostMapping
     public UserTest create(@RequestBody UserTest user) {
-        return userService.create(user, null);
+        return userService.create(user);
     }
     
     /**
@@ -70,7 +70,7 @@ public class UserController {
     * @return the updated user
     */
     @PutMapping("/{id}")
-    public UserTest update(@RequestBody UserTest user, @PathVariable UUID id){
-        return userService.update(user, id);
+    public void update(@RequestBody UserTest user, @PathVariable UUID id){
+        userService.update(user, id);
     }
 }
