@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.teste.wedding.models.User;
+import com.teste.wedding.models.UserTest;
 import com.teste.wedding.services.UserService;
 
 @RestController
@@ -29,7 +29,7 @@ public class UserController {
      * @return a list of users
      */
     @GetMapping
-    public List<User> getAll(){
+    public List<UserTest> getAll(){
         return userService.getAll();
     }
 
@@ -40,7 +40,7 @@ public class UserController {
     * @return the commited user instance
     */
     @PostMapping
-    public User create(@RequestBody User user) {
+    public UserTest create(@RequestBody UserTest user) {
         return userService.create(user, null);
     }
     
@@ -51,7 +51,7 @@ public class UserController {
     */
 
     @GetMapping("/{id}")
-    public Optional<User> getById(@PathVariable UUID id){
+    public Optional<UserTest> getById(@PathVariable UUID id){
             return userService.getById(id);
     }
 
@@ -70,7 +70,7 @@ public class UserController {
     * @return the updated user
     */
     @PutMapping("/{id}")
-    public User update(@RequestBody User user, @PathVariable UUID id){
+    public UserTest update(@RequestBody UserTest user, @PathVariable UUID id){
         return userService.update(user, id);
     }
 }

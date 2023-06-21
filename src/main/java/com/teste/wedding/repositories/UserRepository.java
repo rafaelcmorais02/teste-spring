@@ -7,17 +7,17 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
-import com.teste.wedding.models.User;
+import com.teste.wedding.models.UserTest;
 
 @Repository
 public class UserRepository {
-    private List<User> users = new ArrayList<User>();
+    private List<UserTest> users = new ArrayList<UserTest>();
 
     /**
      * Method to return a list of users
      * @return a list of users
      */
-    public List<User> getAll(){
+    public List<UserTest> getAll(){
         return users;
    }
 
@@ -26,7 +26,7 @@ public class UserRepository {
     * @param id is the unique identifier of a user
     * @return a user if the id exists
     */
-   public Optional<User> getById(UUID id){
+   public Optional<UserTest> getById(UUID id){
         return users.stream().filter(user->user.getId().equals(id)).findFirst();
    }
 
@@ -35,7 +35,7 @@ public class UserRepository {
     * @param user instance
     * @return the commited user instance
     */
-   public User create(User user, UUID id) {
+   public UserTest create(UserTest user, UUID id) {
         if(id != null) {
             user.setId(id);
         }
@@ -59,7 +59,7 @@ public class UserRepository {
     * @param user to be updated
     * @return the updated user
     */
-    public User update(User user, UUID id){
+    public UserTest update(UserTest user, UUID id){
         delete(id);
         return create(user, id);
     }

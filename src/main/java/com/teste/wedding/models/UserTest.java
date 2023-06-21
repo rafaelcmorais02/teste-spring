@@ -2,10 +2,20 @@ package com.teste.wedding.models;
 
 import java.util.UUID;
 
-public class User {
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class UserTest {
     //#region Attributes
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+    
     private String name;
+
     private String email;
     //#endregion
 

@@ -7,7 +7,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.teste.wedding.models.User;
+import com.teste.wedding.models.UserTest;
 import com.teste.wedding.repositories.UserRepository;
 
 @Service
@@ -18,7 +18,7 @@ public class UserService {
      * Method to return a list of users
      * @return a list of users
      */
-   public List<User> getAll(){
+   public List<UserTest> getAll(){
         return userRepository.getAll();
    }
 
@@ -27,7 +27,7 @@ public class UserService {
     * @param id is the unique identifier of a user
     * @return a user if the id exists
     */
-   public Optional<User> getById(UUID id){
+   public Optional<UserTest> getById(UUID id){
         return userRepository.getById(id);
    }
 
@@ -36,7 +36,7 @@ public class UserService {
     * @param user instance
     * @return the commited user instance
     */
-   public User create(User user, UUID id) {
+   public UserTest create(UserTest user, UUID id) {
         return userRepository.create(user, id);
    }
 
@@ -53,7 +53,7 @@ public class UserService {
     * @param user to be updated
     * @return the updated user
     */
-    public User update(User user, UUID id){
+    public UserTest update(UserTest user, UUID id){
         return userRepository.update(user, id);
     }
 }
