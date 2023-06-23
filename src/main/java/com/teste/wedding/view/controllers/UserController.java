@@ -2,8 +2,12 @@ package com.teste.wedding.view.controllers;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.teste.wedding.services.UserService;
 import com.teste.wedding.shared.UserDTO;
+import com.teste.wedding.view.models.UserRequest;
+import com.teste.wedding.view.models.UserResponse;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -28,8 +34,10 @@ public class UserController {
      * @return a list of users
      */
     @GetMapping
-    public List<UserDTO> getAll(){
-        return userService.getAll();
+    public ResponseEntity<List<UserResponse>> getAll(){
+        List<UserDTO> usersDto = userService.getAll();
+        List<UserResponse> usersResponse = usersDto.stream().map(user->new ModelMapper().map(user, UserResponse.class)).collect(Collectors.toList());
+        return new ResponseEntity<>(usersResponse, HttpStatus.OK);  
     }
 
 
@@ -39,8 +47,10 @@ public class UserController {
     * @return the commited user instance
     */
     @PostMapping
-    public UserDTO create(@RequestBody UserDTO user) {
-        return userService.create(user);
+    public ResponseEntity<UserResponse> create(@RequestBody UserRequest user) {
+        UserDTO userDto = new ModelMapper().map(user, UserDTO.class); 
+        userDto = userService.create(userDto);
+        return new ResponseEntity<>(new ModelMapper().map(userDto, UserResponse.class), HttpStatus.CREATED);
     }
     
     /**
@@ -50,8 +60,9 @@ public class UserController {
     */
 
     @GetMapping("/{id}")
-    public UserDTO getById(@PathVariable UUID id){
-            return userService.getById(id);
+    public ResponseEntity<UserResponse> getById(@PathVariable UUID id){
+            UserDTO userDto = userService.getById(id);
+            return new ResponseEntity<>(new ModelMapper().map(userDto, UserResponse.class), HttpStatus.OK) ;
     }
 
     /**
@@ -59,8 +70,9 @@ public class UserController {
     * @param id is the unique identifier of a user 
     */
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable UUID id){
+    public ResponseEntity<?> delete(@PathVariable UUID id) {
             userService.delete(id);
+            return new ResponseEntity<>(HttpStatus.OK);
     }
 
    /**
@@ -69,7 +81,9 @@ public class UserController {
     * @return the updated user
     */
     @PutMapping("/{id}")
-    public void update(@RequestBody UserDTO user, @PathVariable UUID id){
-        userService.update(user, id);
+    public ResponseEntity<?>  update(@RequestBody UserRequest user, @PathVariable UUID id){
+        UserDTO userDto = new ModelMapper().map(user, UserDTO.class);
+        userService.update(userDto, id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
