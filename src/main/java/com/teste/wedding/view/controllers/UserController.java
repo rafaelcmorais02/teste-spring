@@ -1,7 +1,6 @@
-package com.teste.wedding.controllers;
+package com.teste.wedding.view.controllers;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.teste.wedding.models.UserTest;
 import com.teste.wedding.services.UserService;
+import com.teste.wedding.shared.UserDTO;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -29,7 +28,7 @@ public class UserController {
      * @return a list of users
      */
     @GetMapping
-    public List<UserTest> getAll(){
+    public List<UserDTO> getAll(){
         return userService.getAll();
     }
 
@@ -40,7 +39,7 @@ public class UserController {
     * @return the commited user instance
     */
     @PostMapping
-    public UserTest create(@RequestBody UserTest user) {
+    public UserDTO create(@RequestBody UserDTO user) {
         return userService.create(user);
     }
     
@@ -51,7 +50,7 @@ public class UserController {
     */
 
     @GetMapping("/{id}")
-    public Optional<UserTest> getById(@PathVariable UUID id){
+    public UserDTO getById(@PathVariable UUID id){
             return userService.getById(id);
     }
 
@@ -70,7 +69,7 @@ public class UserController {
     * @return the updated user
     */
     @PutMapping("/{id}")
-    public void update(@RequestBody UserTest user, @PathVariable UUID id){
+    public void update(@RequestBody UserDTO user, @PathVariable UUID id){
         userService.update(user, id);
     }
 }

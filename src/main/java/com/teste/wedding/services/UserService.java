@@ -3,12 +3,16 @@ package com.teste.wedding.services;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.teste.wedding.models.UserTest;
+import com.teste.wedding.models.exceptions.ResourceNotFoundException;
 import com.teste.wedding.repositories.UserRepository;
+import com.teste.wedding.shared.UserDTO;
 
 @Service
 public class UserService {
@@ -18,8 +22,11 @@ public class UserService {
      * Method to return a list of users
      * @return a list of users
      */
-     public List<UserTest> getAll(){
-          return userRepository.findAll();
+     public List<UserDTO> getAll(){
+          List<UserTest> users = userRepository.findAll();
+          return users.stream().
+          map(user -> new ModelMapper().map(user, UserDTO.class)).
+          collect(Collectors.toList());
      }
 
      /**
@@ -27,8 +34,12 @@ public class UserService {
      * @param id is the unique identifier of a user
      * @return a user if the id exists
      */
-     public Optional<UserTest> getById(UUID id){
-          return userRepository.findById(id);
+     public UserDTO getById(UUID id){
+          Optional<UserTest> user = userRepository.findById(id);
+          if(user.isEmpty()){
+               throw new ResourceNotFoundException("User with id: "+id+" not found");
+          }
+          return new ModelMapper().map(user.get(), UserDTO.class); 
      }
 
      /**
@@ -36,8 +47,9 @@ public class UserService {
      * @param user instance
      * @return the commited user instance
      */
-     public UserTest create(UserTest user) {
-          return userRepository.save(user);
+     public UserDTO create(UserDTO user) {
+          UserTest userTest =  userRepository.save(new ModelMapper().map(user, UserTest.class));
+          return new ModelMapper().map(userTest, UserDTO.class);
      }
 
      /**
@@ -53,7 +65,7 @@ public class UserService {
      * @param user to be updated
      * @return the updated user
      */
-     public void update(UserTest user, UUID id){
+     public void update(UserDTO user, UUID id){
           userRepository.updateUser(user.getName(), user.getEmail(), id);
      }
 }
